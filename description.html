@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>i231.sort.v5</title>
+</head>
+<body>
+
+Write a Java (ver. 1.6) program to sort an interval of a given list of 
+<code>Comparable</code> elements
+using binary insertion sort method. Binary insertion method is a modified
+insertion method that uses binary search to find the insertion point.
+Your implementation has to be stable (has to preserve the original order of 
+equal elements). There are three parameters to your program: 
+<br/>
+a - the list to be sorted
+<br/>
+left - interval starting position index (included)
+<br/>
+right - interval ending position index (excluded)
+<br/>
+You can only modify the given interval of the list.
+<br/> <br/>
+
+Koostada Java (ver. 1.6) meetod, mis järjestab etteantud võrraldavate 
+(<code>Comparable</code>) elementide listis (<code>java.util.List</code>) 
+etteantud vahemiku kahendpistemeetodil (s.t. pistemeetodil, mille 
+korral pistekoht leitakse kahendotsimise abil). 
+Realiseerida see meetod stabiilsena (s.t tuleb säilitada võrdsete elementide
+korral nende esialgne omavaheline järjestus).
+Meetodi parameetriteks on j&auml;rjestatav list a, vahemiku algusindeks
+left (kaasa arvatud) ning lõpuindeks right (välja arvatud).
+<br/>
+Listi tohib muuta ainult etteantud vahemiku piires.
+<br>
+<br/>
+<code>public static  &lt;T extends Object & Comparable&lt;? super T&gt;&gt; 
+<br/>&nbsp; &nbsp; &nbsp;  void binaryInsertionSort (List&lt;T&gt; a, int left, int right)</code>
+</body>
+</html>
