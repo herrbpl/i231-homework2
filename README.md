@@ -1,6 +1,6 @@
 # README #
 
-See on esimese praktikumi failide hoidla, mida saab kasutada ainult algseks lugemiseks.
+See on teise kodutöö failide hoidla, mida saab kasutada ainult algseks lugemiseks.
 Töötamiseks looge endale isiklik repositoorium, näiteks privaatne 'fork' bitbucket serverisse, millest saate luua klooni oma arvutisse.
 
 ## Näidete kasutamine käsurealt ##
