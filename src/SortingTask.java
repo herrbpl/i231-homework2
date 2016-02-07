@@ -167,24 +167,36 @@ public class SortingTask {
 	 */
 	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right) {
 
+		System.out.printf("Looking for: %s \n", value.toString() );
+		for (int j = left; j < right+1; j++) {
+			System.out.printf("%s, ", a.get(j));
+		}
+		System.out.println("\n---------");
 
 		
 		// not found
 		if (left > right) {
-			return -1;
+			return right+1;
 		}
 
-		System.out.printf("Looking for: %s \n", value.toString() );
-		System.out.printf("Left: %d = %s, Right: %d = %s\n", left, a.get(left).toString(), right,
-				a.get(right).toString());
-
 		int middle = (left + right) / 2;
+		System.out.printf("Left: %d = %s, Right: %d = %s, middle: %d = %s\n", left, a.get(left).toString(), right,
+				a.get(right).toString(), middle, a.get(middle).toString());
+
+		
 
 		// value at middle
 		T b = a.get(middle);
 
 		// if equals what we seek, return index
 		if (b.compareTo(value) == 0) {
+			// find last one that is equal
+			T c;
+			for (int i = middle+1; i < right +1; i++) {
+				c = a.get(i);
+				if (c.compareTo(b) > 0) return i;
+				
+			}
 			return middle;
 		} else if (b.compareTo(value) > 0) {
 			// Value searched is less than value in middle.
@@ -238,6 +250,7 @@ public class SortingTask {
 				System.out.printf("%s, ", a.get(j));
 			}
 			
+			// j2 must be slot where to insert b.
 			int j2 = binarySearch(a, b, left, i-1);
 
 			
@@ -246,6 +259,7 @@ public class SortingTask {
 			for (j = left; j < i; j++) {
 				System.out.printf("%d ", j);
 
+				// this means that if b < a[j], we insert at position j
 				if (b.compareTo(a.get(j)) < 0)
 					break;
 			}
