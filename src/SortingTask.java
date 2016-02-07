@@ -167,12 +167,6 @@ public class SortingTask {
 	 */
 	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right) {
 
-		System.out.printf("Looking for: %s \n", value.toString() );
-		for (int j = left; j < right+1; j++) {
-			System.out.printf("%s, ", a.get(j));
-		}
-		System.out.println("\n---------");
-
 		
 		// not found
 		if (left > right) {
@@ -180,8 +174,6 @@ public class SortingTask {
 		}
 
 		int middle = (left + right) / 2;
-		System.out.printf("Left: %d = %s, Right: %d = %s, middle: %d = %s\n", left, a.get(left).toString(), right,
-				a.get(right).toString(), middle, a.get(middle).toString());
 
 		
 
@@ -223,7 +215,7 @@ public class SortingTask {
 	 */
 	public static <T extends Object & Comparable<? super T>> void binaryInsertionSort(List<T> a, int left, int right) {
 		
-		System.out.printf("Left: %d, Right: %d", left, right);
+		
 		
 		// TODO!!! Your code here!
 		if (a.size() < 2)
@@ -232,40 +224,37 @@ public class SortingTask {
 			return;
 		
 		// dump range
-		System.out.println("Values");
-		for (int i = left; i < right; i++) {
-			System.out.printf("%s, ", a.get(i).toString());
-		}
-		System.out.println("\nSorting begins");
+//		System.out.println("Values");
+//		for (int i = left; i < right; i++) {
+//			System.out.printf("%s, ", a.get(i).toString());
+//		}
+		
 		for (int i = left + 1; i < right; i++) {
 			
 			T b = a.remove(i);
 
 			
-			int j;
+			//int j;
 			
 			// Now the search part. List before i should be sorted so we can use
 			// binary search
-			for (j = left; j < i; j++) {
-				System.out.printf("%s, ", a.get(j));
-			}
-			
+					
 			// j2 must be slot where to insert b.
-			int j2 = binarySearch(a, b, left, i-1);
+			int j = binarySearch(a, b, left, i-1);
 
 			
-			System.out.println("");
-
-			for (j = left; j < i; j++) {
-				System.out.printf("%d ", j);
-
-				// this means that if b < a[j], we insert at position j
-				if (b.compareTo(a.get(j)) < 0)
-					break;
-			}
-			System.out.printf("\nj = %d j2 = %d \n", j, j2);
+//			System.out.println("");
+//
+//			for (j = left; j < i; j++) {
+//				System.out.printf("%d ", j);
+//
+//				// this means that if b < a[j], we insert at position j
+//				if (b.compareTo(a.get(j)) < 0)
+//					break;
+//			}
+//			System.out.printf("\nj = %d j2 = %d \n", j, j2);
 			a.add(j, b); // insert b to position j
-			System.out.println("Next");
+			//System.out.println("Next");
 		}
 
 	} // binaryInsertionSort()
