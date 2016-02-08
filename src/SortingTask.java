@@ -170,13 +170,12 @@ public class SortingTask {
 		int middle = (left + right) / 2;
 		
 		if (lvl == 0) {
-			System.out.printf("\nBinary search for %s, middle[%d] = %s\n", value.toString(), middle, a.get(middle).toString());
-			for (int i = left; i < right; i++) {
-				System.out.printf("%d==>%s ", i, a.get(i).toString());
-			}
-			System.out.println("");
+			System.out.printf("\nBinary search for %s, middle[%d / %f] = %s [%d:%d]\n", value.toString(), middle, ( (left + right)*1.0 / 2.0), a.get(middle).toString(), left, right);
+			
+			System.out.println("\n"+dumpArray(a));
+			
 		}
-		lvl++;
+		
 		// not found
 		if (left > right) {
 			return right+1;
@@ -204,12 +203,12 @@ public class SortingTask {
 			for (int i = middle; i <= right; i++) {
 				System.out.printf("%d=>%s ", i, a.get(i).toString());
 			}
-			return middle+(middle % 2) ; // If middle is equal, have to return one after that position
+			return middle ; // If middle is equal, have to return one after that position
 		} else if (b.compareTo(value) > 0) {
 			// Value searched is less than value in middle.
 			// look now from range of start to middle
 			System.out.println("L ");
-			return binarySearch(a, value, left, middle -1, lvl);
+			return binarySearch(a, value, left, middle -1, lvl++);
 		} else {
 			// Value searched is more than value in middle.
 			// look now from range from middle to end
@@ -218,11 +217,57 @@ public class SortingTask {
 //			for (int i = middle; i < right; i++) {
 //				System.out.printf("%d==>%s ", i, a.get(i).toString());
 //			}
-			return binarySearch(a, value, middle + 1, right, lvl);
+			return binarySearch(a, value, middle + 1, right, lvl++);
 		}
 
 	}
 
+	/**
+	 * creates nice string from array
+	 * @param a - array
+	 * @return Nice array
+	 */
+	public static <T extends Object & Comparable<? super T>> String dumpArray(List<T> a) {
+		int maxlen = 0;
+		for (T t : a) {
+			int i = t.toString().length();
+			if (i > maxlen) {
+				maxlen = i;
+			}
+		}
+		
+		
+		StringBuilder s1 = new StringBuilder();
+		StringBuilder s2 = new StringBuilder();
+		String x = "", y="";
+		for (int i = 0; i < a.size(); i++) {
+			
+			y = a.get(i).toString();
+			x = Integer.toString(i);
+			
+			
+			for (int m = x.length(); m < Math.max(x.length(), y.length()); m++ ) {
+				s1.append(' ');
+			}
+			s1.append(x);
+			s1.append(" |");
+			for (int m = y.length(); m < Math.max(x.length(), y.length()); m++ ) {
+				s2.append(' ');
+			}
+			
+			s2.append(y);
+			s2.append(" |");
+			
+											
+			//System.out.printf("%d==>%s ", i, a.get(i).toString());
+		}
+		StringBuilder s3 = new StringBuilder();
+		s3.append("K:" + s1.toString()).append("\nV:" + s2.toString());
+		return s3.toString();
+	
+	}
+	
+	
 	/**
 	 * Sort a part of the list using binary insertion sort method in a stable
 	 * manner.
