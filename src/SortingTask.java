@@ -156,48 +156,69 @@ public class SortingTask {
 	 * @param value
 	 *            - value to be searched
 	 * @param left
-	 *            - left index boundary
+	 *            - left index boundary, inclusive
 	 * @param right
-	 *            - right index boundary
+	 *            - right index boundary, exclusive
 	 * @return position value should be inserted, right+1, if not found
 	 * 
 	 * @see <
 	 *      href="http://www.algolist.net/Algorithms/Binary_search">http://www.
 	 *      algolist.net/Algorithms/Binary_search</a>
 	 */
-	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right) {
+	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right, int lvl) {
 
+		int middle = (left + right) / 2;
 		
+		if (lvl == 0) {
+			System.out.printf("\nBinary search for %s, middle[%d] = %s\n", value.toString(), middle, a.get(middle).toString());
+			for (int i = left; i < right; i++) {
+				System.out.printf("%d==>%s ", i, a.get(i).toString());
+			}
+			System.out.println("");
+		}
+		lvl++;
 		// not found
 		if (left > right) {
 			return right+1;
 		}
 
-		int middle = (left + right) / 2;
-
 		
-
+				
 		// value at middle
 		T b = a.get(middle);
 
-		// if equals what we seek, return index
+		// if equals what we seek, return index of next value greater than value
 		if (b.compareTo(value) == 0) {
-			// find last one that is equal
+			// find last one that is equal. If there are none, we need to return middle +1 
 			T c;
-			for (int i = middle+1; i < right +1; i++) {
-				c = a.get(i);
-				if (c.compareTo(b) > 0) return i;
+			for (int i = middle; i < right ; i++) {
+				c = a.get(i); // element at i
+				System.out.printf("%s == %s ? \n", c.toString(), b.toString());					
+				if (c.compareTo(b) != 0) {
+					System.out.println("M+");
+					return i;
+				}
 				
 			}
-			return middle;
+			System.out.printf("M: %d (%d) = %s\n ", middle, middle % 2, b.toString());
+			for (int i = middle; i <= right; i++) {
+				System.out.printf("%d=>%s ", i, a.get(i).toString());
+			}
+			return middle+(middle % 2) ; // If middle is equal, have to return one after that position
 		} else if (b.compareTo(value) > 0) {
 			// Value searched is less than value in middle.
 			// look now from range of start to middle
-			return binarySearch(a, value, left, middle - 1);
+			System.out.println("L ");
+			return binarySearch(a, value, left, middle -1, lvl);
 		} else {
 			// Value searched is more than value in middle.
 			// look now from range from middle to end
-			return binarySearch(a, value, middle + 1, right);
+			System.out.println("R ");
+//			System.out.printf("M: %d == %s\n ", middle, b.toString());
+//			for (int i = middle; i < right; i++) {
+//				System.out.printf("%d==>%s ", i, a.get(i).toString());
+//			}
+			return binarySearch(a, value, middle + 1, right, lvl);
 		}
 
 	}
@@ -234,25 +255,32 @@ public class SortingTask {
 			T b = a.remove(i);
 
 			
-			//int j;
+			int j;
 			
 			// Now the search part. List before i should be sorted so we can use
 			// binary search
 					
 			// j2 must be slot where to insert b.
-			int j = binarySearch(a, b, left, i-1);
+			int j2 = binarySearch(a, b, left, i,0);
 
 			
 //			System.out.println("");
 //
-//			for (j = left; j < i; j++) {
-//				System.out.printf("%d ", j);
-//
-//				// this means that if b < a[j], we insert at position j
-//				if (b.compareTo(a.get(j)) < 0)
-//					break;
-//			}
-//			System.out.printf("\nj = %d j2 = %d \n", j, j2);
+			for (j = left; j < i; j++) {
+				//System.out.printf("%d ", j);
+
+				// this means that if b < a[j], we insert at position j
+				if (b.compareTo(a.get(j)) < 0)
+					break;
+			}
+			if (j != j2) {
+				System.out.printf("\nj = %d j2 = %d \n", j, j2);
+				for (int k = 0; k < a.size(); k++) {
+					System.out.printf("%d=>%s ", k, a.get(k).toString());
+				}
+				System.out.printf("\n");
+			}
+			
 			a.add(j, b); // insert b to position j
 			//System.out.println("Next");
 		}
