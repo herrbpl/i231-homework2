@@ -148,87 +148,57 @@ public class SortingTask {
 	} // qsort()
 
 	/**
-	 * binarySearch Retuns position where to insert value in list a. Items in list must be
-	 * ordered from smaller to larger in range from left to right
+	 * @see http://jeffreystedfast.blogspot.com.ee/2007/02/binary-insertion-sort.html
 	 * 
-	 * @param a
-	 *            - list to be searched
-	 * @param value
-	 *            - value to be searched
-	 * @param left
-	 *            - left index boundary, inclusive
-	 * @param right
-	 *            - right index boundary, inclusive
-	 * @return position value should be inserted, right+1, if not found
-	 * 
-	 * @see <a href="http://www.algolist.net/Algorithms/Binary_search">http://www.algolist.net/Algorithms/Binary_search</a>
+	 * @param a - List of T
+	 * @param value -  value to search position for 
+	 * @param left - left index, inclusive
+	 * @param right - right index, inclusive
+	 * @return
 	 */
-	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right, int lvl) {
+	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right, int control) {
+		
+		int mid = left + ((right - left) / 2);
+	    if (left == right) {
+	    	System.out.printf("Searching for %s\n", value.toString());
+	    	System.out.println("\n"+dumpArray(a));
+	    	System.out.printf("1: L:%d R:%d M:%d\n", left, right, mid);
+	    	return left;
+	    }
+	        
 
-		int middle = left + (right-left) / 2;
-		
-		if (lvl == 0) {
-			System.out.printf("\nBinary search for %s, middle[%d / %f] = %s [%d:%d]\n", value.toString(), middle, ( left + (right-left)*1.0 / 2.0), a.get(middle).toString(), left, right);
-			
-			System.out.println("\n"+dumpArray(a));
-			
-		}
-		T b;
-		while (left <= right) {
-	             middle = (left + right) / 2;
-	             b = a.get(middle);
-//	            if (b.compareTo(value) == 0)
-//	                  break;
-	             if (b.compareTo(value) > 0)
-	                  right = middle - 1;
-	            else
-	                  left = middle + 1;
-	      }
-		
-		System.out.printf("L:%d M:%d R:%d\n", left, middle, right);
-		int i;
-		for(i = middle; i <= right; i++) {
-			b = a.get(i);
-			if (b.compareTo(value) < 0) break;
-				
-		}
-		
-		return i;
-//		
-//		
-//		// not found
-//		if (left > right) {
-//			System.out.printf("%d:%d Found: %d\n", left, right, left);
-//			return -1;
-//		}
-//
-//		lvl++;
-//				
-//		// value at middle. It is same for 0..9 and 0..8
-//		
-//		int j = -1;
-//		
-//		
-//		if (b.compareTo(value) > 0) {
-//			// Value searched is less than to value in middle.
-//			// look now from range of start to middle
-//			System.out.printf("L %d %d %d\n", left, (left + (middle - 1)) / 2,middle -1);
-//			
-//			j =  binarySearch(a, value, left, middle -1, lvl);
-//			System.out.printf("->%d", j);
-//			return j;
-//		} else {
-//			// Value searched is more than value in middle.
-//			// look now from range from middle to end
-//			System.out.printf("R %d %d %d\n", middle + 1, (middle + 1+right) / 2,right);
-//
-//			
-//			j = binarySearch(a, value, middle + 1, right, lvl);
-//			System.out.printf("->%d", j);
-//			return j;
-//		}
+	   
+	    
+	    int i = value.compareTo(a.get(mid)); // if value > a[mid], =1
+	    
+	    
+	    if (i > 0) // (i > a[mid])
+	        return binarySearch (a, value, mid + 1, right, control);
+	    else if (i < 0) //(key < a[mid])
+	        return binarySearch (a, value, left, mid, control);
 
+	    System.out.printf("Searching for %s\n", value.toString());
+	    System.out.println("\n"+dumpArray(a));
+	    System.out.printf("2: L:%d R:%d M:%d\n", left, right, mid);
+
+	    // 
+	    int j;
+	    for(j = mid; j < right; j++) {
+	    	if (j > control) {
+	    		System.out.printf("AAA %d %d", control, j);
+	    	}
+	    	i = value.compareTo(a.get(j)); // if value > a[mid], =1
+	    	if (i < 0) {
+	    		break; 
+	    	}
+	    }
+	    if (j > control) {
+    		System.out.printf("BBB %d %d", control, j);
+    	}
+	    return j;
 	}
+	
+	
 
 	/**
 	 * creates nice string from array
@@ -290,8 +260,8 @@ public class SortingTask {
 	 */
 	public static <T extends Object & Comparable<? super T>> void binaryInsertionSort(List<T> a, int left, int right) {
 		
-		System.out.println("List size:" + a.size());
-		System.out.printf("Left: %d\nRight: %d\n",left, right);
+//		System.out.println("List size:" + a.size());
+//		System.out.printf("Left: %d\nRight: %d\n",left, right);
 		
 		
 		// TODO!!! Your code here!
@@ -308,26 +278,24 @@ public class SortingTask {
 		
 		for (int i = left + 1; i < right; i++) {
 			
-			T b = a.remove(i);
+			T b = a.remove(i); // this the what causes the error. Removal from list, it fucks up index
 
 			
 			int j;
 			
 			// Now the search part. List before i should be sorted so we can use
 			// binary search
-			System.out.printf("On Order: %d %s\n", i, Boolean.toString(checkOrder(a, left, i)));
+//			System.out.printf("On Order: %d %s\n", i, Boolean.toString(checkOrder(a, left, i)));
 			
 			// optimization 1
 			// if (value at b > value at i, position will i-1 ? 
 			if (b.compareTo(a.get(i-1)) >=0) {
 				
 				j = i;
-				System.out.printf("Shortcut j = %d\n", j);
+//				System.out.printf("Shortcut j = %d\n", j);
 			}
 			
-			// j2 must be slot where to insert b.// NB! right boundary can go above limit 
-			int j2 = binarySearch(a, b, left, i,0); 
-			if (j2 < 0) j2 = i-1;
+			
 			
 //			System.out.println("");
 //
@@ -338,7 +306,14 @@ public class SortingTask {
 				if (b.compareTo(a.get(j)) < 0)
 					break;
 			}
-			if (j != j2) { System.out.println("j != j2");}
+			
+			// j2 must be slot where to insert b.// NB! right boundary can go above limit 
+			int j2 = binarySearch(a, b, left, i, j); 
+			//if (j2 < 0) j2 = i-1;
+			
+			if (j != j2) {
+				System.out.println("j != j2");
+				}
 			System.out.printf("\nj = %d j2 = %d \n", j, j2);				
 						
 			a.add(j, b); // insert b to position j
