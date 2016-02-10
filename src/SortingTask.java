@@ -148,7 +148,7 @@ public class SortingTask {
 	} // qsort()
 
 	/**
-	 * binarySearch Returns index of value in list a. Items in list must be
+	 * binarySearch Retuns position where to insert value in list a. Items in list must be
 	 * ordered from smaller to larger in range from left to right
 	 * 
 	 * @param a
@@ -161,65 +161,72 @@ public class SortingTask {
 	 *            - right index boundary, inclusive
 	 * @return position value should be inserted, right+1, if not found
 	 * 
-	 * @see <
-	 *      href="http://www.algolist.net/Algorithms/Binary_search">http://www.
-	 *      algolist.net/Algorithms/Binary_search</a>
+	 * @see <a href="http://www.algolist.net/Algorithms/Binary_search">http://www.algolist.net/Algorithms/Binary_search</a>
 	 */
 	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right, int lvl) {
 
-		int middle = (left + right) / 2;
+		int middle = left + (right-left) / 2;
 		
 		if (lvl == 0) {
-			System.out.printf("\nBinary search for %s, middle[%d / %f] = %s [%d:%d]\n", value.toString(), middle, ( (left + right)*1.0 / 2.0), a.get(middle).toString(), left, right);
+			System.out.printf("\nBinary search for %s, middle[%d / %f] = %s [%d:%d]\n", value.toString(), middle, ( left + (right-left)*1.0 / 2.0), a.get(middle).toString(), left, right);
 			
 			System.out.println("\n"+dumpArray(a));
 			
 		}
+		T b;
+		while (left <= right) {
+	             middle = (left + right) / 2;
+	             b = a.get(middle);
+//	            if (b.compareTo(value) == 0)
+//	                  break;
+	             if (b.compareTo(value) > 0)
+	                  right = middle - 1;
+	            else
+	                  left = middle + 1;
+	      }
 		
-		// not found
-		if (left > right) {
-			System.out.printf("Found: %d\n", left);
-			return left;
-		}
-
-		lvl++;
+		System.out.printf("L:%d M:%d R:%d\n", left, middle, right);
+		int i;
+		for(i = middle; i <= right; i++) {
+			b = a.get(i);
+			if (b.compareTo(value) < 0) break;
 				
-		// value at middle
-		T b = a.get(middle);
-
-		// if equals what we seek, return index of next value greater than value
-		if (b.compareTo(value) == 0) {
-			// find last one that is equal. If there are none, we need to return middle +1 			
-			T c;
-			for (int i = middle; i < right ; i++) {
-				c = a.get(i); // element at i
-				System.out.printf("%s == %s ? \n", c.toString(), b.toString());					
-				if (c.compareTo(b) != 0) {
-					System.out.printf("M+ %d\n", i);
-					return i;
-				}
-				
-			}
-			System.out.printf("M: %d (%d) = %s\n ", middle, middle % 2, b.toString());
-			
-			return middle ; // If middle is equal, have to return one after that position
-		} else if (b.compareTo(value) > 0) {
-			// Value searched is less than value in middle.
-			// look now from range of start to middle
-			System.out.printf("L %d %d %d\n", left, (left + (middle - 1)) / 2,middle -1);
-			
-			return binarySearch(a, value, left, middle -1, lvl);
-		} else {
-			// Value searched is more than value in middle.
-			// look now from range from middle to end
-			System.out.printf("R %d %d %d\n", middle + 1, (middle + 1+right) / 2,right);
-//			System.out.printf("M: %d == %s\n ", middle, b.toString());
-//			for (int i = middle; i < right; i++) {
-//				System.out.printf("%d==>%s ", i, a.get(i).toString());
-//			}
-			
-			return binarySearch(a, value, middle + 1, right, lvl);
 		}
+		
+		return i;
+//		
+//		
+//		// not found
+//		if (left > right) {
+//			System.out.printf("%d:%d Found: %d\n", left, right, left);
+//			return -1;
+//		}
+//
+//		lvl++;
+//				
+//		// value at middle. It is same for 0..9 and 0..8
+//		
+//		int j = -1;
+//		
+//		
+//		if (b.compareTo(value) > 0) {
+//			// Value searched is less than to value in middle.
+//			// look now from range of start to middle
+//			System.out.printf("L %d %d %d\n", left, (left + (middle - 1)) / 2,middle -1);
+//			
+//			j =  binarySearch(a, value, left, middle -1, lvl);
+//			System.out.printf("->%d", j);
+//			return j;
+//		} else {
+//			// Value searched is more than value in middle.
+//			// look now from range from middle to end
+//			System.out.printf("R %d %d %d\n", middle + 1, (middle + 1+right) / 2,right);
+//
+//			
+//			j = binarySearch(a, value, middle + 1, right, lvl);
+//			System.out.printf("->%d", j);
+//			return j;
+//		}
 
 	}
 
@@ -308,7 +315,16 @@ public class SortingTask {
 			
 			// Now the search part. List before i should be sorted so we can use
 			// binary search
-					
+			System.out.printf("On Order: %d %s\n", i, Boolean.toString(checkOrder(a, left, i)));
+			
+			// optimization 1
+			// if (value at b > value at i, position will i-1 ? 
+			if (b.compareTo(a.get(i-1)) >=0) {
+				
+				j = i;
+				System.out.printf("Shortcut j = %d\n", j);
+			}
+			
 			// j2 must be slot where to insert b.// NB! right boundary can go above limit 
 			int j2 = binarySearch(a, b, left, i,0); 
 			if (j2 < 0) j2 = i-1;
@@ -322,10 +338,9 @@ public class SortingTask {
 				if (b.compareTo(a.get(j)) < 0)
 					break;
 			}
-			if (j != j2) {
-				System.out.printf("\nj = %d j2 = %d \n", j, j2);				
-			}
-			System.out.printf("j = %d\n", j);
+			if (j != j2) { System.out.println("j != j2");}
+			System.out.printf("\nj = %d j2 = %d \n", j, j2);				
+						
 			a.add(j, b); // insert b to position j
 			//System.out.println("Next");
 		}
