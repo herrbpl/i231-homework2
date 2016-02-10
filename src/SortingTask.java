@@ -3,111 +3,101 @@ import java.util.*;
 
 public class SortingTask {
 
-	// public static final int MAX = 512000;
-	public static final int MAX = 30;
+	public static final int MAX = 512000;
+	//public static final int MAX = 30;
 
 	/** Main method. */
 	static public void main(String[] args) {
 		List<Integer> randlist = new ArrayList<Integer>(MAX); // original
 		Random generaator = new Random();
-		//int maxKey = Math.min(1000, (MAX + 32) / 16);
-		int maxKey = 50;
+		int maxKey = Math.min(1000, (MAX + 32) / 16);
+		//int maxKey = 50;
 		for (int i = 0; i < MAX; i++) {
 			randlist.add(new Integer(generaator.nextInt(maxKey)));
 		}
 
-		int rightLimit = randlist.size() ;
-		long stime = new Date().getTime();
-		long ftime = new Date().getTime();
-		int diff = new Long(ftime - stime).intValue();
 		
-		List<Integer> copy2 = new ArrayList<Integer>(randlist);
-		System.out.println(String.format("List size: %d", copy2.size()));
+		
+		
+		int rightLimit = randlist.size() / 16;
 
-		stime = new Date().getTime();
-		binaryInsertionSort(copy2, 0, rightLimit);
-		ftime = new Date().getTime();
-		diff = new Long(ftime - stime).intValue();
-		System.out.println("\nBinary insertion sort");
-		System.out.println("Time (ms): " + String.valueOf(diff));
-		if (!checkOrder(copy2, 0, rightLimit))
-			throw new RuntimeException("Wrong order!!!");
-		
-		
-//		
-//		int rightLimit = randlist.size() / 16;
-//
-//		// Start a competition
-//		for (int round = 0; round < 4; round++) {
-//			rightLimit = 2 * rightLimit;
-//			System.out.println("\nLength: " + String.valueOf(rightLimit));
-//
-//			List<Integer> copy1 = new ArrayList<Integer>(randlist);
-//			long stime = new Date().getTime();
-//			insertionSort(copy1, 0, rightLimit);
-//			long ftime = new Date().getTime();
-//			int diff = new Long(ftime - stime).intValue();
-//			System.out.println("\nInsertion sort");
-//			System.out.println("Time (ms): " + String.valueOf(diff));
-//			if (!checkOrder(copy1, 0, rightLimit))
-//				throw new RuntimeException("Wrong order!!!");
-//
-//			// Binary insertion sort
-//			List<Integer> copy2 = new ArrayList<Integer>(randlist);
-//			System.out.println(String.format("List size: %d", copy2.size()));
-//
-//			stime = new Date().getTime();
-//			binaryInsertionSort(copy2, 0, rightLimit);
-//			ftime = new Date().getTime();
-//			diff = new Long(ftime - stime).intValue();
-//			System.out.println("\nBinary insertion sort");
-//			System.out.println("Time (ms): " + String.valueOf(diff));
-//			if (!checkOrder(copy2, 0, rightLimit))
-//				throw new RuntimeException("Wrong order!!!");
+		// Start a competition
+		for (int round = 0; round < 4; round++) {
+			rightLimit = 2 * rightLimit;
+			System.out.println("\nLength: " + String.valueOf(rightLimit));
 
-			// List<Pair> opairs = new ArrayList<Pair>(MAX);
-			// for (int i = 0; i < randlist.size(); i++) {
-			// opairs.add(new Pair(randlist.get(i), i));
-			// }
-			// binaryInsertionSort(opairs, 0, rightLimit);
-			// if (!checkStability(opairs, 0, rightLimit))
-			// throw new RuntimeException("Method not stable!");
-			//
-			// //
-			//
-			//
-			// List<Integer> copy3 = new ArrayList<Integer>(randlist);
-			// stime = new Date().getTime();
-			// qsort(copy3, 0, rightLimit);
-			// ftime = new Date().getTime();
-			// diff = new Long(ftime - stime).intValue();
-			// System.out.println("\nQuicksort");
-			// System.out.println("Time (ms): " + String.valueOf(diff));
-			// if (!checkOrder(copy3, 0, rightLimit))
-			// throw new RuntimeException("Wrong order!!!");
-			// List<Integer> copy4 = new ArrayList<Integer>(randlist);
-			// Integer[] sarray = new Integer[rightLimit];
-			// sarray = (Integer[]) copy4.toArray(sarray);
-			// stime = new Date().getTime();
-			// Arrays.sort(sarray, 0, rightLimit);
-			// ftime = new Date().getTime();
-			// copy4 = Arrays.asList(sarray);
-			// diff = new Long(ftime - stime).intValue();
-			// System.out.println("\njava.util.Arrays");
-			// System.out.println("Time (ms): " + String.valueOf(diff));
-			// if (!checkOrder(copy4, 0, rightLimit))
-			// throw new RuntimeException("Wrong order!!!");
-			// List<Integer> copy5 = new ArrayList<Integer>(randlist);
-			// copy5 = copy5.subList(0, rightLimit);
-			// stime = new Date().getTime();
-			// Collections.sort(copy5);
-			// ftime = new Date().getTime();
-			// diff = new Long(ftime - stime).intValue();
-			// System.out.println("\njava.util.Collections");
-			// System.out.println("Time (ms): " + String.valueOf(diff));
-			// if (!checkOrder(copy5, 0, rightLimit))
-			// throw new RuntimeException("Wrong order!!!");
-//		}
+			List<Integer> copy1 = new ArrayList<Integer>(randlist);
+			long stime = new Date().getTime();
+			insertionSort(copy1, 0, rightLimit);
+			long ftime = new Date().getTime();
+			int diff = new Long(ftime - stime).intValue();
+			System.out.println("\nInsertion sort");
+			System.out.println("Time (ms): " + String.valueOf(diff));
+			if (!checkOrder(copy1, 0, rightLimit))
+				throw new RuntimeException("Wrong order!!!");
+
+			// Binary insertion sort
+			List<Integer> copy2 = new ArrayList<Integer>(randlist);
+			System.out.println(String.format("List size: %d", copy2.size()));
+
+			stime = new Date().getTime();
+			binaryInsertionSort(copy2, 0, rightLimit);
+			ftime = new Date().getTime();
+			diff = new Long(ftime - stime).intValue();
+			System.out.println("\nBinary insertion sort");
+			System.out.println("Time (ms): " + String.valueOf(diff));
+			if (!checkOrder(copy2, 0, rightLimit))
+				throw new RuntimeException("Wrong order!!!");
+
+			 List<Pair> opairs = new ArrayList<Pair>(MAX);
+			 for (int i = 0; i < randlist.size(); i++) {
+			 opairs.add(new Pair(randlist.get(i), i));
+			 }
+			 binaryInsertionSort(opairs, 0, rightLimit);
+			 if (!checkStability(opairs, 0, rightLimit))
+			 throw new RuntimeException("Method not stable!");
+			
+			 // quicksort
+			
+			
+			 List<Integer> copy3 = new ArrayList<Integer>(randlist);
+			 System.out.println(String.format("List size: %d", copy3.size()));
+			 stime = new Date().getTime();
+			 qsort(copy3, 0, rightLimit);
+			 
+			 ftime = new Date().getTime();
+			 diff = new Long(ftime - stime).intValue();
+			 System.out.println("\nQuicksort");
+			 System.out.println("Time (ms): " + String.valueOf(diff));
+			 if (!checkOrder(copy3, 0, rightLimit))
+			 throw new RuntimeException("Wrong order!!!");
+			 
+			 List<Integer> copy4 = new ArrayList<Integer>(randlist);
+			 Integer[] sarray = new Integer[rightLimit];
+			 sarray = (Integer[]) copy4.toArray(sarray);
+			 System.out.println(String.format("List size: %d", sarray.length));
+			 stime = new Date().getTime();
+			 
+			 Arrays.sort(sarray, 0, rightLimit);
+			 ftime = new Date().getTime();
+			 copy4 = Arrays.asList(sarray);
+			 diff = new Long(ftime - stime).intValue();
+			 System.out.println("\njava.util.Arrays");
+			 System.out.println("Time (ms): " + String.valueOf(diff));
+			 if (!checkOrder(copy4, 0, rightLimit))
+			 throw new RuntimeException("Wrong order!!!");
+			 List<Integer> copy5 = new ArrayList<Integer>(randlist);
+			 copy5 = copy5.subList(0, rightLimit);
+			 
+			 stime = new Date().getTime();
+			 Collections.sort(copy5);
+			 ftime = new Date().getTime();
+			 diff = new Long(ftime - stime).intValue();
+			 System.out.println("\njava.util.Collections");
+			 System.out.println("Time (ms): " + String.valueOf(diff));
+			 if (!checkOrder(copy5, 0, rightLimit))
+			 throw new RuntimeException("Wrong order!!!");
+		}
 	} // main()
 
 	/**
@@ -156,45 +146,45 @@ public class SortingTask {
 	 * @param right - right index, inclusive
 	 * @return
 	 */
-	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right, int control) {
+	public static <T extends Object & Comparable<? super T>> int binarySearch(List<T> a, T value, int left, int right) {
 		
 		int mid = left + ((right - left) / 2);
 	    if (left == right) {
-	    	System.out.printf("Searching for %s\n", value.toString());
-	    	System.out.println("\n"+dumpArray(a));
-	    	System.out.printf("1: L:%d R:%d M:%d\n", left, right, mid);
+//	    	System.out.printf("Searching for %s\n", value.toString());
+//	    	System.out.println("\n"+dumpArray(a));
+//	    	System.out.printf("1: L:%d R:%d M:%d\n", left, right, mid);
 	    	return left;
 	    }
 	        
-
+	    
 	   
 	    
 	    int i = value.compareTo(a.get(mid)); // if value > a[mid], =1
 	    
 	    
 	    if (i > 0) // (i > a[mid])
-	        return binarySearch (a, value, mid + 1, right, control);
+	        return binarySearch (a, value, mid + 1, right);
 	    else if (i < 0) //(key < a[mid])
-	        return binarySearch (a, value, left, mid, control);
+	        return binarySearch (a, value, left, mid);
 
-	    System.out.printf("Searching for %s\n", value.toString());
-	    System.out.println("\n"+dumpArray(a));
-	    System.out.printf("2: L:%d R:%d M:%d\n", left, right, mid);
+//	    System.out.printf("Searching for %s\n", value.toString());
+//	    System.out.println("\n"+dumpArray(a));
+//	    System.out.printf("2: L:%d R:%d M:%d\n", left, right, mid);
 
 	    // 
 	    int j;
 	    for(j = mid; j < right; j++) {
-	    	if (j > control) {
-	    		System.out.printf("AAA %d %d", control, j);
-	    	}
+//	    	if (j > control) {
+//	    		System.out.printf("AAA %d %d", control, j);
+//	    	}
 	    	i = value.compareTo(a.get(j)); // if value > a[mid], =1
 	    	if (i < 0) {
 	    		break; 
 	    	}
 	    }
-	    if (j > control) {
-    		System.out.printf("BBB %d %d", control, j);
-    	}
+//	    if (j > control) {
+//    		System.out.printf("BBB %d %d", control, j);
+//    	}
 	    return j;
 	}
 	
@@ -260,9 +250,7 @@ public class SortingTask {
 	 */
 	public static <T extends Object & Comparable<? super T>> void binaryInsertionSort(List<T> a, int left, int right) {
 		
-//		System.out.println("List size:" + a.size());
-//		System.out.printf("Left: %d\nRight: %d\n",left, right);
-		
+
 		
 		// TODO!!! Your code here!
 		if (a.size() < 2)
@@ -270,54 +258,29 @@ public class SortingTask {
 		if ((right - left) < 2)
 			return;
 		
-		// dump range
-//		System.out.println("Values");
-//		for (int i = left; i < right; i++) {
-//			System.out.printf("%s, ", a.get(i).toString());
-//		}
+
 		
 		for (int i = left + 1; i < right; i++) {
 			
-			T b = a.remove(i); // this the what causes the error. Removal from list, it fucks up index
+			T b = a.remove(i); 
 
 			
 			int j;
 			
 			// Now the search part. List before i should be sorted so we can use
 			// binary search
-//			System.out.printf("On Order: %d %s\n", i, Boolean.toString(checkOrder(a, left, i)));
-			
-			// optimization 1
-			// if (value at b > value at i, position will i-1 ? 
+ 
 			if (b.compareTo(a.get(i-1)) >=0) {
 				
 				j = i;
-//				System.out.printf("Shortcut j = %d\n", j);
+				
+			} else  {
+				j = binarySearch(a, b, left, i);
 			}
-			
-			
-			
-//			System.out.println("");
-//
-			for (j = left; j < i; j++) {
-				//System.out.printf("%d ", j);
-
-				// this means that if b < a[j], we insert at position j
-				if (b.compareTo(a.get(j)) < 0)
-					break;
-			}
-			
-			// j2 must be slot where to insert b.// NB! right boundary can go above limit 
-			int j2 = binarySearch(a, b, left, i, j); 
-			//if (j2 < 0) j2 = i-1;
-			
-			if (j != j2) {
-				System.out.println("j != j2");
-				}
-			System.out.printf("\nj = %d j2 = %d \n", j, j2);				
+		
 						
 			a.add(j, b); // insert b to position j
-			//System.out.println("Next");
+			
 		}
 
 	} // binaryInsertionSort()
