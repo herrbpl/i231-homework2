@@ -3,6 +3,24 @@ import java.util.*;
 
 public class SortingTask {
 
+	public enum SortMethod {
+		 NA, INSERTION_SORT, BINARY_INSERTION_SORT, QUICKSORT, ARRAYS, COLLECTIONS
+	}
+	
+
+	public static class Result {
+		public SortMethod method = SortMethod.NA;
+		public int items = 0;
+		public int runtime = 0;
+		public Result(SortMethod method, int items, int runtime ) {
+			// TODO Auto-generated constructor stub
+			this.method = method;
+			this.runtime = runtime;
+			this.items = items;
+		}
+		
+	}
+
 	public static final int MAX = 512000;
 	//public static final int MAX = 30;
 
@@ -16,8 +34,7 @@ public class SortingTask {
 			randlist.add(new Integer(generaator.nextInt(maxKey)));
 		}
 
-		
-		
+		List<Result> results  = new ArrayList<Result>();		
 		
 		int rightLimit = randlist.size() / 16;
 
@@ -33,6 +50,9 @@ public class SortingTask {
 			int diff = new Long(ftime - stime).intValue();
 			System.out.println("\nInsertion sort");
 			System.out.println("Time (ms): " + String.valueOf(diff));
+			
+			results.add(new Result(SortMethod.INSERTION_SORT, rightLimit, diff));
+			
 			if (!checkOrder(copy1, 0, rightLimit))
 				throw new RuntimeException("Wrong order!!!");
 
@@ -46,6 +66,10 @@ public class SortingTask {
 			diff = new Long(ftime - stime).intValue();
 			System.out.println("\nBinary insertion sort");
 			System.out.println("Time (ms): " + String.valueOf(diff));
+			
+			results.add(new Result(SortMethod.BINARY_INSERTION_SORT, rightLimit, diff));
+			
+			
 			if (!checkOrder(copy2, 0, rightLimit))
 				throw new RuntimeException("Wrong order!!!");
 
@@ -69,6 +93,9 @@ public class SortingTask {
 			 diff = new Long(ftime - stime).intValue();
 			 System.out.println("\nQuicksort");
 			 System.out.println("Time (ms): " + String.valueOf(diff));
+			 
+			 results.add(new Result(SortMethod.QUICKSORT, rightLimit, diff));
+				
 			 if (!checkOrder(copy3, 0, rightLimit))
 			 throw new RuntimeException("Wrong order!!!");
 			 
@@ -84,6 +111,9 @@ public class SortingTask {
 			 diff = new Long(ftime - stime).intValue();
 			 System.out.println("\njava.util.Arrays");
 			 System.out.println("Time (ms): " + String.valueOf(diff));
+			 
+			 results.add(new Result(SortMethod.ARRAYS, rightLimit, diff));
+				
 			 if (!checkOrder(copy4, 0, rightLimit))
 			 throw new RuntimeException("Wrong order!!!");
 			 List<Integer> copy5 = new ArrayList<Integer>(randlist);
@@ -95,9 +125,20 @@ public class SortingTask {
 			 diff = new Long(ftime - stime).intValue();
 			 System.out.println("\njava.util.Collections");
 			 System.out.println("Time (ms): " + String.valueOf(diff));
+			 
+			 results.add(new Result(SortMethod.COLLECTIONS, rightLimit, diff));
+				
+			 
 			 if (!checkOrder(copy5, 0, rightLimit))
 			 throw new RuntimeException("Wrong order!!!");
 		}
+		
+		System.out.println("METHOD,ITEMCOUNT,RUNTIME\n");
+		
+		for (Result result : results) {
+			System.out.printf("%s,%d,%d\n", result.method.name(), result.runtime, result.runtime);
+		}
+		
 	} // main()
 
 	/**
